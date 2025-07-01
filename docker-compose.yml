@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         IPEXLLM_RELEASE_REPO: ajaymnair/ollama-intel-gpu
-        IPEXLLM_RELEASE_VERSON: v2.3.0
+        IPEXLLM_RELEASE_VERSON: v2.3.0-nightly
         IPEXLLM_PORTABLE_ZIP_FILENAME: ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz
     container_name: ollama-intel-gpu
     restart: always
