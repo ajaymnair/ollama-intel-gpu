@@ -2,19 +2,27 @@ services:
   ollama-intel-gpu:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        IPEXLLM_RELEASE_REPO: ajaymnair/ollama-intel-gpu
-        IPEXLLM_RELEASE_VERSON: v2.3.0-nightly
-        IPEXLLM_PORTABLE_ZIP_FILENAME: ollama-ipex-llm-2.3.0b20250612-ubuntu.tgz
+      dockerfile: dockerfile
     container_name: ollama-intel-gpu
-    restart: always
+    restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri
     volumes:
-      - ollama-intel-gpu:/root/.ollama
+      - /mnt/cache/Models/ollama:/root/.ollama
+    ports:
+      - "11434:11434"
     environment:
+      - OLLAMA_HOST=0.0.0.0
       - ONEAPI_DEVICE_SELECTOR=level_zero:0
       - IPEX_LLM_NUM_CTX=16384
-volumes:
-  ollama-intel-gpu: {}
+      - OLLAMA_INTEL_GPU=1
+      - OLLAMA_NUM_GPU=999
+      - ZES_ENABLE_SYSMAN=1
+      - OLLAMA_DEBUG=1
+    networks:
+      br0:
+        ipv4_address: 10.9.8.4
+
+networks:
+  br0:
+    external: true
