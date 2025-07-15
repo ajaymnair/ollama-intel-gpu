@@ -9,16 +9,17 @@ services:
       - /dev/dri:/dev/dri
     volumes:
       - /mnt/cache/Models/ollama:/root/.ollama
-    ports:
-      - "11434:11434"
+    # ports:
+    #   - "11434:11434"
     environment:
-      - OLLAMA_HOST=0.0.0.0
-      - ONEAPI_DEVICE_SELECTOR=level_zero:0
+      # - OLLAMA_HOST=0.0.0.0
+      # - ONEAPI_DEVICE_SELECTOR=level_zero:0
       - IPEX_LLM_NUM_CTX=16384
       - OLLAMA_INTEL_GPU=1
-      - OLLAMA_NUM_GPU=999
-      - ZES_ENABLE_SYSMAN=1
-      - OLLAMA_DEBUG=1
+      # - OLLAMA_NUM_GPU=999
+      # - ZES_ENABLE_SYSMAN=1
+      # - OLLAMA_DEBUG=1
+    # network_mode: host
     networks:
       br0:
         ipv4_address: 10.9.8.4
