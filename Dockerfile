@@ -2,7 +2,6 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=america/new_york
 
-
 # Base packages
 RUN apt update && \
     apt install --no-install-recommends -q -y \
@@ -33,6 +32,15 @@ RUN cd / && \
   wget https://github.com/ipex-llm/ipex-llm/releases/download/v2.3.0-nightly/${IPEXLLM_PORTABLE_ZIP_FILENAME} && \
   tar xvf ${IPEXLLM_PORTABLE_ZIP_FILENAME} --strip-components=1 -C /
 
-ENV OLLAMA_HOST=0.0.0.0:11434
+ENV OLLAMA_NUM_GPU=999 \ 
+    no_proxy=localhost,127.0.0.1 \
+    ZES_ENABLE_SYSMAN=1 \
+    SYCL_CACHE_PERSISTENT=1 \
+    OLLAMA_KEEP_ALIVE=10m \
+    # [optional]
+    SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1 \
+    OLLAMA_HOST='0.0.0.0:11434'
+    # ONEAPI_DEVICE_SELECTOR=level_zero:0
+    # ONEAPI_DEVICE_SELECTOR="level_zero:0;level_zero:1"
 
-ENTRYPOINT ["/bin/bash", "/start-ollama.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "exec /ollama serve"]
